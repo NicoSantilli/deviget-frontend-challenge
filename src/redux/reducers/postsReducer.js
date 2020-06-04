@@ -12,7 +12,7 @@ const filterPosts = (state, id) =>
 
 const posts = createSlice({
   name: "redditPosts",
-  initialState: { isErrored: false, isLoading: false, posts: [] },
+  initialState: { isErrored: false, isLoading: false, posts: [], post: {} },
   reducers: {
     loadPosts: (state) => {
       return { ...state, isLoading: true };
@@ -41,10 +41,30 @@ const posts = createSlice({
       const post = findPost(state, payload);
       post.clicked = true;
     },
+    seePostDetails: (state, { payload }) => {
+      return {
+        ...state,
+        post: payload,
+      };
+    },
+    dismissPostFromDetails: (state) => {
+      return {
+        ...state,
+        post: {},
+      };
+    },
   },
 });
 
 export const {
   reducer: postsReducer,
-  actions: { loadPosts, savePosts, dismissAllPosts, dismissPost, markAsRead },
+  actions: {
+    loadPosts,
+    savePosts,
+    dismissAllPosts,
+    dismissPost,
+    markAsRead,
+    seePostDetails,
+    dismissPostFromDetails,
+  },
 } = posts;

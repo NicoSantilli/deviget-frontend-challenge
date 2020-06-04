@@ -5,6 +5,7 @@ import {
   dismissAllPosts,
   dismissPost,
   markAsRead,
+  seePostDetails,
 } from "./postsReducer";
 
 const aSinglePost = {
@@ -114,6 +115,7 @@ describe("Posts Reducer", () => {
   it("Should return initial state", () => {
     expect(postsReducer(undefined, {})).toEqual({
       posts: [],
+      post: {},
       isLoading: false,
       isErrored: false,
     });
@@ -122,6 +124,7 @@ describe("Posts Reducer", () => {
   it("Should set the loading as true", () => {
     expect(postsReducer(undefined, loadPosts)).toEqual({
       posts: [],
+      post: {},
       isLoading: true,
       isErrored: false,
     });
@@ -130,6 +133,7 @@ describe("Posts Reducer", () => {
   it("Should save the post into the store", () => {
     expect(postsReducer(undefined, savePosts([aSinglePost]))).toEqual({
       posts: [aSinglePost],
+      post: {},
       isLoading: false,
       isErrored: false,
     });
@@ -140,12 +144,14 @@ describe("Posts Reducer", () => {
 
     expect(reducer).toEqual({
       posts: [aSinglePost],
+      post: {},
       isLoading: false,
       isErrored: false,
     });
 
     expect(postsReducer(reducer, dismissAllPosts)).toEqual({
       posts: [],
+      post: {},
       isLoading: false,
       isErrored: false,
     });
@@ -159,12 +165,14 @@ describe("Posts Reducer", () => {
 
     expect(reducer).toEqual({
       posts: [aSinglePost, anotherPost],
+      post: {},
       isLoading: false,
       isErrored: false,
     });
 
     expect(postsReducer(reducer, dismissPost(anotherPost.data.id))).toEqual({
       posts: [aSinglePost],
+      post: {},
       isLoading: false,
       isErrored: false,
     });
@@ -178,6 +186,7 @@ describe("Posts Reducer", () => {
 
     expect(reducer).toEqual({
       posts: [aSinglePost, anotherPost],
+      post: {},
       isLoading: false,
       isErrored: false,
     });
@@ -189,6 +198,28 @@ describe("Posts Reducer", () => {
 
     expect(postsReducer(reducer, markAsRead(aSinglePost.data.id))).toEqual({
       posts: [readPost, anotherPost],
+      post: {},
+      isLoading: false,
+      isErrored: false,
+    });
+  });
+
+  it("Should store post on read", () => {
+    const reducer = postsReducer(
+      undefined,
+      savePosts([aSinglePost, anotherPost])
+    );
+
+    expect(reducer).toEqual({
+      posts: [aSinglePost, anotherPost],
+      post: {},
+      isLoading: false,
+      isErrored: false,
+    });
+
+    expect(postsReducer(reducer, seePostDetails(aSinglePost))).toEqual({
+      posts: [aSinglePost, anotherPost],
+      post: aSinglePost,
       isLoading: false,
       isErrored: false,
     });
