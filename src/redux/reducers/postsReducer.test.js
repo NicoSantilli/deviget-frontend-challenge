@@ -118,6 +118,7 @@ describe("Posts Reducer", () => {
       post: {},
       isLoading: false,
       isErrored: false,
+      lastPostId: "",
     });
   });
 
@@ -127,26 +128,34 @@ describe("Posts Reducer", () => {
       post: {},
       isLoading: true,
       isErrored: false,
+      lastPostId: "",
     });
   });
 
   it("Should save the post into the store", () => {
-    expect(postsReducer(undefined, savePosts([aSinglePost]))).toEqual({
+    expect(
+      postsReducer(undefined, savePosts({ children: [aSinglePost] }))
+    ).toEqual({
       posts: [aSinglePost],
       post: {},
       isLoading: false,
       isErrored: false,
+      lastPostId: `${aSinglePost.kind}_${aSinglePost.data.id}`,
     });
   });
 
   it("Should remove posts from store on dismiss all", () => {
-    const reducer = postsReducer(undefined, savePosts([aSinglePost]));
+    const reducer = postsReducer(
+      undefined,
+      savePosts({ children: [aSinglePost] })
+    );
 
     expect(reducer).toEqual({
       posts: [aSinglePost],
       post: {},
       isLoading: false,
       isErrored: false,
+      lastPostId: `${aSinglePost.kind}_${aSinglePost.data.id}`,
     });
 
     expect(postsReducer(reducer, dismissAllPosts)).toEqual({
@@ -154,13 +163,14 @@ describe("Posts Reducer", () => {
       post: {},
       isLoading: false,
       isErrored: false,
+      lastPostId: `${aSinglePost.kind}_${aSinglePost.data.id}`,
     });
   });
 
   it("Should remove only one post on dismiss single post", () => {
-    const reducer = postsReducer(
+    let reducer = postsReducer(
       undefined,
-      savePosts([aSinglePost, anotherPost])
+      savePosts({ children: [aSinglePost, anotherPost] })
     );
 
     expect(reducer).toEqual({
@@ -168,6 +178,17 @@ describe("Posts Reducer", () => {
       post: {},
       isLoading: false,
       isErrored: false,
+      lastPostId: `${anotherPost.kind}_${anotherPost.data.id}`,
+    });
+
+    reducer = postsReducer(reducer, seePostDetails(anotherPost));
+
+    expect(reducer).toEqual({
+      posts: [aSinglePost, anotherPost],
+      post: anotherPost,
+      isLoading: false,
+      isErrored: false,
+      lastPostId: `${anotherPost.kind}_${anotherPost.data.id}`,
     });
 
     expect(postsReducer(reducer, dismissPost(anotherPost.data.id))).toEqual({
@@ -175,13 +196,14 @@ describe("Posts Reducer", () => {
       post: {},
       isLoading: false,
       isErrored: false,
+      lastPostId: `${anotherPost.kind}_${anotherPost.data.id}`,
     });
   });
 
   it("Should mark post as read", () => {
     const reducer = postsReducer(
       undefined,
-      savePosts([aSinglePost, anotherPost])
+      savePosts({ children: [aSinglePost, anotherPost] })
     );
 
     expect(reducer).toEqual({
@@ -189,6 +211,7 @@ describe("Posts Reducer", () => {
       post: {},
       isLoading: false,
       isErrored: false,
+      lastPostId: `${anotherPost.kind}_${anotherPost.data.id}`,
     });
 
     let readPost = {
@@ -201,13 +224,14 @@ describe("Posts Reducer", () => {
       post: {},
       isLoading: false,
       isErrored: false,
+      lastPostId: `${anotherPost.kind}_${anotherPost.data.id}`,
     });
   });
 
   it("Should store post on read", () => {
     const reducer = postsReducer(
       undefined,
-      savePosts([aSinglePost, anotherPost])
+      savePosts({ children: [aSinglePost, anotherPost] })
     );
 
     expect(reducer).toEqual({
@@ -215,6 +239,7 @@ describe("Posts Reducer", () => {
       post: {},
       isLoading: false,
       isErrored: false,
+      lastPostId: `${anotherPost.kind}_${anotherPost.data.id}`,
     });
 
     expect(postsReducer(reducer, seePostDetails(aSinglePost))).toEqual({
@@ -222,6 +247,7 @@ describe("Posts Reducer", () => {
       post: aSinglePost,
       isLoading: false,
       isErrored: false,
+      lastPostId: `${anotherPost.kind}_${anotherPost.data.id}`,
     });
   });
 });

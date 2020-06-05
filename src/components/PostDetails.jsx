@@ -8,7 +8,7 @@ import {
   Typography,
 } from "@material-ui/core";
 import { useSelector } from "react-redux";
-import { getDate } from "../utils";
+import { getDate, parseHtml } from "../utils";
 import CommentIcon from "@material-ui/icons/ChatBubble";
 import ScoreIcon from "@material-ui/icons/TrendingUp";
 import { isEmpty } from "lodash";
@@ -42,12 +42,37 @@ const StyledTypography = styled(Typography)`
   }
 `;
 
-const Media = ({ hint, url }) => {
-  switch (hint) {
+const StyledVideo = styled.video`
+  max-width: 25% !important;
+`;
+
+const Media = ({ post }) => {
+  const { post_hint, url, secure_media, media_embed } = post.data;
+  switch (post_hint) {
     case "image":
       return <StyledImg src={url} />;
+    case "hosted:video":
+    case "rich:video":
+      const fallbackUrl = secure_media?.reddit_video?.fallback_url;
+      const mediaEmbedContent = parseHtml(media_embed?.content);
+      return fallbackUrl ? (
+        <StyledVideo controls autoPlay loop>
+          <source src={fallbackUrl} type="video/mp4" />
+        </StyledVideo>
+      ) : (
+        <div
+          className="content"
+          dangerouslySetInnerHTML={{ __html: mediaEmbedContent }}
+        ></div>
+      );
     default:
-      return null;
+      return (
+        <Typography>
+          <a href={url} target={"_blank"} rel={"noopener noreferrer"}>
+            {url}
+          </a>
+        </Typography>
+      );
   }
 };
 
@@ -58,13 +83,11 @@ const PostDetails = () => {
     title,
     author,
     created_utc,
-    post_hint,
-    url,
     num_comments,
     subreddit_name_prefixed,
     upvote_ratio,
     score,
-  } = post;
+  } = post.data || {};
 
   return (
     !isEmpty(post) && (
@@ -73,7 +96,10 @@ const PostDetails = () => {
           title={title}
           subheader={
             <>
-              <StyledLink href={`reddit.com/${subreddit_name_prefixed}`}>
+              <StyledLink
+                href={`https://reddit.com/${subreddit_name_prefixed}`}
+                target={"_blank"}
+              >
                 {subreddit_name_prefixed}
               </StyledLink>{" "}
               • Posted by <strong>u/{author}</strong> {getDate(created_utc)}{" "}
@@ -81,7 +107,7 @@ const PostDetails = () => {
           }
         />
         <StyledCardMedia>
-          <Media hint={post_hint} url={url} />
+          <Media post={post} />
         </StyledCardMedia>
         <CardActions>
           <StyledTypography>

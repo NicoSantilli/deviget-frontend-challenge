@@ -14,9 +14,8 @@ import {
   dismissPost,
   seePostDetails,
   markAsRead,
-  dismissPostFromDetails,
 } from "../redux/reducers/postsReducer";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { getDate } from "../utils";
 
@@ -29,18 +28,32 @@ const DismissButton = styled(Button)`
   flex-grow: 1 !important;
 `;
 
+const StyledListItemText = styled(ListItemText)`
+  & > span {
+    ${({ clicked }) =>
+      clicked ? `color: rgba(0,0,0,.3)` : "color: #000 !important"}
+  }
+`;
+
 const PostItem = ({ post }) => {
   const dispatch = useDispatch();
-  const { post: postShown } = useSelector((state) => state);
 
-  const { id, title, author, thumbnail, num_comments, created_utc } = post;
+  const {
+    id,
+    title,
+    author,
+    thumbnail,
+    num_comments,
+    created_utc,
+    clicked,
+  } = post.data;
 
   return (
     <Fragment key={id}>
       <ListItem
         button
         onClick={() => {
-          dispatch(markAsRead(post.id));
+          dispatch(markAsRead(id));
           dispatch(seePostDetails(post));
         }}
         alignItems={"flex-start"}
@@ -48,7 +61,8 @@ const PostItem = ({ post }) => {
         <ListItemAvatar>
           <Avatar alt={id} src={thumbnail} />
         </ListItemAvatar>
-        <ListItemText
+        <StyledListItemText
+          clicked={clicked}
           primary={title}
           secondary={
             <>
@@ -69,9 +83,6 @@ const PostItem = ({ post }) => {
             startIcon={<DeleteIcon />}
             onClick={() => {
               dispatch(dismissPost(id));
-              if (id === postShown.id) {
-                dispatch(dismissPostFromDetails());
-              }
             }}
           >
             Dismiss

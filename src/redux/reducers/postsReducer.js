@@ -12,16 +12,29 @@ const filterPosts = (state, id) =>
 
 const posts = createSlice({
   name: "redditPosts",
-  initialState: { isErrored: false, isLoading: false, posts: [], post: {} },
+  initialState: {
+    isErrored: false,
+    isLoading: false,
+    posts: [],
+    post: {},
+    lastPostId: "",
+  },
   reducers: {
     loadPosts: (state) => {
       return { ...state, isLoading: true };
     },
     savePosts: (state, { payload }) => {
+      const lastPostRetrieved = payload.children.slice(-1).pop();
+      const lastPost =
+        payload.before || lastPostRetrieved
+          ? `${lastPostRetrieved.kind}_${lastPostRetrieved.data.id}`
+          : "";
+
       return {
         ...state,
         isLoading: false,
-        posts: [...state.posts, ...payload],
+        posts: [...state.posts, ...payload.children],
+        lastPostId: lastPost,
       };
     },
     dismissAllPosts: (state) => {
@@ -32,9 +45,11 @@ const posts = createSlice({
     },
     dismissPost: (state, { payload }) => {
       const posts = filterPosts(state, payload);
+      const post = state.post.data;
       return {
         ...state,
         posts,
+        post: payload === post?.id ? {} : state.post,
       };
     },
     markAsRead: (state, { payload }) => {
@@ -45,12 +60,6 @@ const posts = createSlice({
       return {
         ...state,
         post: payload,
-      };
-    },
-    dismissPostFromDetails: (state) => {
-      return {
-        ...state,
-        post: {},
       };
     },
   },
@@ -65,6 +74,5 @@ export const {
     dismissPost,
     markAsRead,
     seePostDetails,
-    dismissPostFromDetails,
   },
 } = posts;
