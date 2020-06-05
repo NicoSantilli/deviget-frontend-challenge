@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/deviget-frontend-challenge/precache-manifest.f1ab5303163cc2f593f8c984752cfd53.js"
+  "/deviget-frontend-challenge/precache-manifest.5306e6904b7433042e9d320c0ff316ef.js"
 );
 
 self.addEventListener('message', (event) => {

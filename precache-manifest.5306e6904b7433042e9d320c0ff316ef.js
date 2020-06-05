@@ -1,6 +1,6 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "2a1fbb163a0f85c79250401054236069",
+    "revision": "4c54ac38e1bb920080c61295e9589baa",
     "url": "/deviget-frontend-challenge/index.html"
   },
   {
@@ -12,8 +12,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/deviget-frontend-challenge/static/js/2.8b553002.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "5c81be91ccf432c40737",
-    "url": "/deviget-frontend-challenge/static/js/main.7431739a.chunk.js"
+    "revision": "9c959a2fcb1209c791f5",
+    "url": "/deviget-frontend-challenge/static/js/main.308d4863.chunk.js"
   },
   {
     "revision": "bbb771223949afe3dae4",

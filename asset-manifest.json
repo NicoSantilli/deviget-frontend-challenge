@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.js": "/deviget-frontend-challenge/static/js/main.7431739a.chunk.js",
-    "main.js.map": "/deviget-frontend-challenge/static/js/main.7431739a.chunk.js.map",
+    "main.js": "/deviget-frontend-challenge/static/js/main.308d4863.chunk.js",
+    "main.js.map": "/deviget-frontend-challenge/static/js/main.308d4863.chunk.js.map",
     "runtime-main.js": "/deviget-frontend-challenge/static/js/runtime-main.6ea1a0e7.js",
     "runtime-main.js.map": "/deviget-frontend-challenge/static/js/runtime-main.6ea1a0e7.js.map",
     "static/js/2.8b553002.chunk.js": "/deviget-frontend-challenge/static/js/2.8b553002.chunk.js",
     "static/js/2.8b553002.chunk.js.map": "/deviget-frontend-challenge/static/js/2.8b553002.chunk.js.map",
     "index.html": "/deviget-frontend-challenge/index.html",
-    "precache-manifest.f1ab5303163cc2f593f8c984752cfd53.js": "/deviget-frontend-challenge/precache-manifest.f1ab5303163cc2f593f8c984752cfd53.js",
+    "precache-manifest.5306e6904b7433042e9d320c0ff316ef.js": "/deviget-frontend-challenge/precache-manifest.5306e6904b7433042e9d320c0ff316ef.js",
     "service-worker.js": "/deviget-frontend-challenge/service-worker.js",
     "static/js/2.8b553002.chunk.js.LICENSE.txt": "/deviget-frontend-challenge/static/js/2.8b553002.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.6ea1a0e7.js",
     "static/js/2.8b553002.chunk.js",
-    "static/js/main.7431739a.chunk.js"
+    "static/js/main.308d4863.chunk.js"
   ]
 }
