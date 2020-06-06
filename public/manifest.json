@@ -1,0 +1,6 @@
+{
+    "short_name": "Challenge",
+    "name": "Deviget FrontEnd Challenge",
+    "start_url": ".",
+    "display": "standalone"
+}

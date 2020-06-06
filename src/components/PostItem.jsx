@@ -30,12 +30,12 @@ const DismissButton = styled(Button)`
 
 const StyledListItemText = styled(ListItemText)`
   & > span {
-    ${({ clicked }) =>
-      clicked ? `color: rgba(0,0,0,.3)` : "color: #000 !important"}
+    color: ${({ color }) => color} !important;
   }
 `;
 
-const PostItem = ({ post }) => {
+const PostItem = (props) => {
+  const { post, setMobileOpen } = props;
   const dispatch = useDispatch();
 
   const {
@@ -55,14 +55,22 @@ const PostItem = ({ post }) => {
         onClick={() => {
           dispatch(markAsRead(id));
           dispatch(seePostDetails(post));
+          setMobileOpen(false);
         }}
         alignItems={"flex-start"}
       >
         <ListItemAvatar>
-          <Avatar alt={id} src={thumbnail} />
+          <Avatar
+            alt={id}
+            src={thumbnail}
+            onClick={(e) => {
+              e.stopPropagation();
+              window.open(thumbnail);
+            }}
+          />
         </ListItemAvatar>
         <StyledListItemText
-          clicked={clicked}
+          color={clicked ? "rgba(0,0,0,.3)" : "#000"}
           primary={title}
           secondary={
             <>

@@ -17,11 +17,18 @@ const StyledDiv = styled.div`
   justify-content: center !important;
 `;
 
-const PostsList = () => {
+const StyledCircularProgress = styled(CircularProgress)`
+  margin: 0;
+  position: absolute;
+  top: ${({ top }) => top}%;
+`;
+
+const PostsList = ({ setMobileOpen }) => {
   const { posts, isLoading, lastPostId } = useSelector((state) => state);
   const dispatch = useDispatch();
 
-  if (isEmpty(posts) && !isLoading) loadRedditPosts(dispatch, { limit: 50 });
+  if (isEmpty(posts) && !isLoading && !lastPostId)
+    loadRedditPosts(dispatch, { limit: 50 });
   const latestPost = useRef();
 
   const lastElementRef = useCallback(
@@ -47,15 +54,21 @@ const PostsList = () => {
           if (posts.length === i + 1) {
             return (
               <div key={post.data.id} ref={lastElementRef}>
-                <PostItem post={post} />
+                <PostItem post={post} setMobileOpen={setMobileOpen} />
               </div>
             );
           }
-          return <PostItem key={post.data.id} post={post} />;
+          return (
+            <PostItem
+              key={post.data.id}
+              post={post}
+              setMobileOpen={setMobileOpen}
+            />
+          );
         })}
         {isLoading && (
           <StyledDiv>
-            <CircularProgress />
+            <StyledCircularProgress top={isEmpty(posts) ? "50" : "100"} />
           </StyledDiv>
         )}
       </PostsGrid>

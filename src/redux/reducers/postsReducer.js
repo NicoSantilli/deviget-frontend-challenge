@@ -41,6 +41,7 @@ const posts = createSlice({
       return {
         ...state,
         posts: [],
+        post: {},
       };
     },
     dismissPost: (state, { payload }) => {
